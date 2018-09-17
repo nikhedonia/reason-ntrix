@@ -1,95 +1,22 @@
 open Array;
 open ReactDOMRe;
+open Pieces;
 let component = ReasonReact.statelessComponent("Tetris");
 
 let createBoard = (n, m) => make_matrix(m, n, 0);
 
-let pieceI = [|
-  [|0,0,0,0|],
-  [|1,1,1,1|],
-  [|0,0,0,0|],
-  [|0,0,0,0|],
-|];
-
-
-let pieceB = [|
-  [|1, 1|],
-  [|1, 1|],
-|];
-
-
-let pieceS = [|
-  [|0, 1, 1|],
-  [|1, 1, 0|],
-  [|0, 0, 0|],
-|];
-
-
-let pieceZ = [|
-  [|1, 1, 0|],
-  [|0, 1, 1|],
-  [|0, 0, 0|],
-|];
-
-let pieceL = [| 
-  [|0, 0, 1|],
-  [|1, 1, 1|],
-  [|0, 0, 0|],
-|];
-
-
-let pieceJ = [| 
-  [|1, 0, 0|],
-  [|1, 1, 1|],
-  [|0, 0, 0|],
-|];
-
-
-let pieceT = [| 
-  [|0, 1, 0|],
-  [|1, 1, 1|],
-  [|0, 0, 0|],
-|];
-
-
-
-type orientations =
- | O
- | R
- | H
- | L
 
 
 type boardT = array(array(int));
 
-type orientedPiece = {
-  o: orientations,
-  g: boardT
-};
-
-
-let rotateRight = (board) => {
-  let w = board[0] |> length
-  let h = board |> length
-  Array.make_matrix(
-    w, h, 0
-  ) |> mapi( (i, rows) =>
-    rows |> mapi( (j, _) => {
-      board[w-j-1][i]  
-    }))
-}
 
 
 
-let pieces = [|
-  {o:R, g:rotateRight(pieceI)},
-  {o:O, g:pieceB},
-  {o:O, g:pieceS},
-  {o:O, g:pieceZ},
-  {o:O, g:pieceL},
-  {o:O, g:pieceJ},
-  {o:O, g:pieceT}
-|];
+let pieces = Pieces.pieces;
+
+
+
+
 
 
 type pos = {
@@ -163,7 +90,7 @@ type state = {
   board: boardT,
   lines: int,
   lastAction: actions,
-  piece: orientedPiece,
+  piece: Pieces.oriented,
   pos: pos
 };
 
