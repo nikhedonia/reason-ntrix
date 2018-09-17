@@ -1,11 +1,10 @@
+open Array;
 
 type orientations =
  | O
  | R
  | H
  | L
-
-
 
 type oriented = {
   o: orientations,
@@ -60,8 +59,6 @@ let _T = [|
   [|0, 0, 0|],
 |];
 
-
-open Array;
 let rotateRight = (board) => {
   let w = board[0] |> length
   let h = board |> length
@@ -73,7 +70,6 @@ let rotateRight = (board) => {
     }))
 }
 
-
 let pieces = [|
   {o:R, g:rotateRight(_I)},
   {o:O, g:_B},
@@ -83,3 +79,16 @@ let pieces = [|
   {o:O, g:_J},
   {o:O, g:_T}
 |];
+
+
+let transition = (o, r) =>
+  switch (o, r) {
+    | (O, R) => R
+    | (O, L) => L
+    | (R, R) => H
+    | (H, R) => L
+    | (H, L) => R
+    | (L, R) => O
+    | (L, L) => H
+    | _ => O
+  }
