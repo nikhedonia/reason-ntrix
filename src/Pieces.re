@@ -1,69 +1,87 @@
 open Array;
 
+type cells = 
+  | Empty
+  | Block
+  | Shadow;
+
+let isEmpty = cell => switch(cell) {
+  | Empty => true
+  | _ => false
+}
+
+let asCells = matrix => {
+  matrix |> map( rows =>
+    rows |> map( cells =>
+      switch(cells) {
+        | 0 => Empty
+        | _ => Block
+      }))};
+
 type orientations =
  | O
  | R
  | H
- | L
+ | L;
 
 type oriented = {
   o: orientations,
-  g: array(array(int))
+  g: array(array(cells))
 };
 
 
-let _I = [|
+let _I = asCells([|
   [|0,0,0,0|],
   [|1,1,1,1|],
   [|0,0,0,0|],
   [|0,0,0,0|],
-|];
+|]);
 
 
-let _B = [|
+let _B = asCells([|
   [|1, 1|],
   [|1, 1|],
-|];
+|]);
 
 
-let _S = [|
+let _S = asCells([|
   [|0, 1, 1|],
   [|1, 1, 0|],
   [|0, 0, 0|],
-|];
+|]);
 
 
-let _Z = [|
+let _Z = asCells([|
   [|1, 1, 0|],
   [|0, 1, 1|],
   [|0, 0, 0|],
-|];
+|]);
 
-let _L = [| 
+let _L = asCells([| 
   [|0, 0, 1|],
   [|1, 1, 1|],
   [|0, 0, 0|],
-|];
+|]);
 
 
-let _J = [| 
+let _J = asCells([| 
   [|1, 0, 0|],
   [|1, 1, 1|],
   [|0, 0, 0|],
-|];
+|]);
 
 
-let _T = [| 
+let _T = asCells([| 
   [|0, 1, 0|],
   [|1, 1, 1|],
   [|0, 0, 0|],
-|];
+|]);
 
-let rotateRight = (board) => {
+let rotateRight = (board:array(array(cells))) => {  
   let w = board[0] |> length
   let h = board |> length
   make_matrix(
-    w, h, 0
+    w, h, Empty
   ) |> mapi( (i, rows) =>
     rows |> mapi( (j, _) => {
       board[w-j-1][i]  
@@ -71,13 +89,13 @@ let rotateRight = (board) => {
 }
 
 let pieces = [|
-  {o:R, g:rotateRight(_I)},
-  {o:O, g:_B},
-  {o:O, g:_S},
-  {o:O, g:_Z},
-  {o:O, g:_L},
-  {o:O, g:_J},
-  {o:O, g:_T}
+  {o:R, g: rotateRight(_I)},
+  {o:O, g: _B},
+  {o:O, g: _S},
+  {o:O, g: _Z},
+  {o:O, g: _L},
+  {o:O, g: _J},
+  {o:O, g: _T}
 |];
 
 

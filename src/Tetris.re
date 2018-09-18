@@ -18,7 +18,7 @@ type actions =
   | ()
 
 type state = {
-  board: array(array(int)),
+  board: array(array(cells)),
   lines: int,
   lastAction: actions,
   piece: Pieces.oriented,
@@ -113,9 +113,9 @@ let store = Reductive.Store.create(
 ());
 
 let cellColor = cell => switch(cell) {
-  | 0 => "#000"
-  | 2 => "#222"
-  | _ => "#fff"
+  | Empty => "#000"
+  | Shadow => "#222"
+  | Block => "#fff"
 }
 
 
