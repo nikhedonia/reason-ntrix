@@ -80,17 +80,18 @@ let materialize = (board, piece, pos) => {
 
 let eliminate = board => {
   let w = board[0]|>length;
-  let next = board |> fold_left( (rows, row) => 
-    if( w != (row |> fold_left( (a, b) => {
-      if (b>0){ 
-        a+1; 
-      }else {
-        a;
-      }
-    }, 0))) 
-      concat([rows, [|row|]])
-    else rows
-  , [||]);
+  let next = board |> fold_left( (rows, row) => {
+    let count = row 
+      |> fold_left( (a, b) => switch (b>0) { 
+        | true => a+1
+        | false => a
+      },  0);
+
+    switch ( w == count ) {
+      | true => rows
+      | false => concat([rows, [|row|]])
+    }
+  }, [||]);
 
   let removed = (board|>length) - (next|>length);
   
